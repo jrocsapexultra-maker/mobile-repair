@@ -1,0 +1,4 @@
+import React,{useState} from 'react';
+type Notice={id:string;channel:'In App'|'Email'|'SMS';event:string;enabled:boolean};
+const seed:Notice[]=[{id:'n1',channel:'SMS',event:'Estimate ready',enabled:true},{id:'n2',channel:'Email',event:'Repair status changed',enabled:true},{id:'n3',channel:'SMS',event:'Ready for pickup',enabled:true},{id:'n4',channel:'In App',event:'Part below threshold',enabled:true}];
+export default function NotificationCenter(){const [rows,setRows]=useState(seed);return <section className="panel"><h2>Notification Automation</h2><p>Customer updates and shop alerts with explicit delivery controls.</p><div className="list">{rows.map(n=><label className="card row" key={n.id}><div><b>{n.event}</b><small>{n.channel}</small></div><input type="checkbox" checked={n.enabled} onChange={()=>setRows(v=>v.map(x=>x.id===n.id?{...x,enabled:!x.enabled}:x))}/></label>)}</div></section>}

@@ -1,0 +1,22 @@
+openapi: 3.1.0
+info: {title: JROC MDM Adapter Contract, version: 20.2.0}
+paths:
+  /api/mdm/{provider}/capabilities:
+    get:
+      summary: Read provider capabilities
+      parameters: [{name: provider, in: path, required: true, schema: {type: string}}]
+      responses: {'200': {description: Capabilities}}
+  /api/mdm/{provider}/devices/{deviceId}:
+    get:
+      summary: Read a managed device
+      parameters:
+        - {name: provider, in: path, required: true, schema: {type: string}}
+        - {name: deviceId, in: path, required: true, schema: {type: string}}
+      responses: {'200': {description: Managed device}}
+  /api/mdm/{provider}/devices/{deviceId}/approved-wipe:
+    post:
+      summary: Submit an ownership-verified and approved reprovisioning request
+      parameters:
+        - {name: provider, in: path, required: true, schema: {type: string}}
+        - {name: deviceId, in: path, required: true, schema: {type: string}}
+      responses: {'202': {description: Accepted}}

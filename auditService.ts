@@ -1,0 +1,4 @@
+import {supabase} from '../../lib/supabase';import type {AuditInput} from '../../lib/types';
+const localKey='jroc_audit_fallback';
+export async function appendAudit(event:AuditInput){if(!supabase){const rows=JSON.parse(localStorage.getItem(localKey)||'[]');const row={...event,id:crypto.randomUUID(),created_at:new Date().toISOString()};localStorage.setItem(localKey,JSON.stringify([row,...rows]));return row}const {data,error}=await supabase.from('audit_logs').insert({action:event.action,entity_type:event.entityType,entity_id:event.entityId,outcome:event.outcome,details:event.details||{}}).select().single();if(error)throw error;return data}
+export async function listAudit(){if(!supabase)return JSON.parse(localStorage.getItem(localKey)||'[]');const {data,error}=await supabase.from('audit_logs').select('*').order('created_at',{ascending:false}).limit(200);if(error)throw error;return data||[]}

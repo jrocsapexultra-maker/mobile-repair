@@ -1,0 +1,3 @@
+import type {MdmProviderId} from './types';
+export interface ProviderHealth{provider:MdmProviderId;available:boolean;latencyMs:number;checkedAt:string;message:string}
+export async function checkProvider(provider:MdmProviderId):Promise<ProviderHealth>{const start=performance.now();try{const base=import.meta.env.VITE_MDM_API_BASE||'/api/mdm';const r=await fetch(`${base}/${provider}/capabilities`,{signal:AbortSignal.timeout(5000)});return{provider,available:r.ok,latencyMs:Math.round(performance.now()-start),checkedAt:new Date().toISOString(),message:r.ok?'Healthy':`HTTP ${r.status}`}}catch(e:any){return{provider,available:false,latencyMs:Math.round(performance.now()-start),checkedAt:new Date().toISOString(),message:e.message}}}
